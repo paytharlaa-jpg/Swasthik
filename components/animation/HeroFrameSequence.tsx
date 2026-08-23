@@ -166,24 +166,24 @@ export function HeroFrameSequence({ showDiagnostics = false, children }: HeroFra
       // 1. Frame 0
       images[0].src = getFramePath(0);
       
-      // 2. Frames 1-29
-      for (let i = 1; i < 30; i++) {
+      // 2. Frames 1-9
+      for (let i = 1; i < 10; i++) {
         images[i].src = getFramePath(i);
       }
       
       // 3. Remaining frames progressively
-      let loadIndex = 30;
+      let loadIndex = 10;
       const loadNextBatch = () => {
         if (loadIndex >= FRAME_COUNT) return;
-        const batchEnd = Math.min(loadIndex + 10, FRAME_COUNT);
+        const batchEnd = Math.min(loadIndex + 2, FRAME_COUNT);
         for (let i = loadIndex; i < batchEnd; i++) {
           images[i].src = getFramePath(i);
         }
         loadIndex = batchEnd;
-        setTimeout(loadNextBatch, 50);
+        setTimeout(loadNextBatch, 250);
       };
       
-      setTimeout(loadNextBatch, 100);
+      setTimeout(loadNextBatch, 1000);
     };
 
     // Initialize
@@ -248,3 +248,4 @@ export function HeroFrameSequence({ showDiagnostics = false, children }: HeroFra
     </section>
   );
 }
+

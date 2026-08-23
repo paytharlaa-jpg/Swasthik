@@ -1,4 +1,12 @@
 import { ContactExperience } from "@/components/sections/ContactExperience";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us | Swasthik Ayurveda",
+  description: "Book your free consultation with Swasthik Ayurveda today. Reach out to our experts for Sciatica, Back Pain, and more.",
+};
+
+
 import { CinematicFooter } from "@/components/sections/CinematicFooter";
 
 export default function ContactPage() {
@@ -17,3 +25,4 @@ export default function ContactPage() {
     </main>
   );
 }
+

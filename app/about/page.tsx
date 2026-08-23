@@ -1,4 +1,12 @@
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us | Swasthik Ayurveda",
+  description: "Learn more about Swasthik Ayurveda, our expert doctors, and our premium root-cause Ayurvedic healing methodologies.",
+};
+
+
 import { Footer } from "@/components/layout/Footer";
 import { CinematicFooter } from "@/components/sections/CinematicFooter";
 
@@ -23,3 +31,4 @@ export default function AboutPage() {
     </main>
   );
 }
+

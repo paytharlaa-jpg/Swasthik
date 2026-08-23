@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function InvestmentExperience() {
   const containerRef = useRef<HTMLElement>(null);
-  const metrics = [
+  const metrics: Array<{label: string, value: number, suffix: string, id: string, prefix?: string}> = [
     { label: "Patients Treated", value: 22, suffix: ",950+", id: "patients" },
     { label: "Days Program", value: 7, suffix: "", id: "days" },
     { label: "Natural Care", value: 100, suffix: "%", id: "natural" },
@@ -91,3 +91,5 @@ export function InvestmentExperience() {
     </section>
   );
 }
+
+

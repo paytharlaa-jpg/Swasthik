@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--color-midnight);
+  --color-foreground: var(--color-ivory);
+  
+  --color-midnight: #0B0B0D;
+  --color-royal: #0F172A;
+  --color-gold: #D4AF37;
+  --color-gold-soft: #C8A96A;
+  --color-bronze: #8B6B3F;
+  --color-ivory: #F8F6F2;
+  --color-marble: #EDE6DA;
+  --color-stone: #7A7A7A;
+  
+  --color-glass-bg: rgba(255, 255, 255, 0.06);
+  --color-glass-border: rgba(255, 255, 255, 0.12);
+
+  --font-hero: var(--font-canela), ui-serif, Georgia, serif;
+  --font-heading: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-button: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --color-midnight: #0B0B0D;
+  --color-royal: #0F172A;
+  --color-gold: #D4AF37;
+  --color-gold-soft: #C8A96A;
+  --color-bronze: #8B6B3F;
+  --color-ivory: #F8F6F2;
+  --color-marble: #EDE6DA;
+  --color-stone: #7A7A7A;
+
+  --color-glass-bg: rgba(255, 255, 255, 0.06);
+  --color-glass-border: rgba(255, 255, 255, 0.12);
+
+  --text-hero: clamp(3rem, 8vw, 8rem);
+  --text-h1: clamp(2.5rem, 6vw, 6rem);
+  --text-h2: clamp(2rem, 4vw, 4rem);
+  --text-h3: clamp(1.5rem, 3vw, 2.5rem);
+  --text-body-lg: clamp(1.125rem, 1.5vw, 1.25rem);
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  
+  --spacing-section-desktop: 200px;
+  --spacing-section-tablet: 120px;
+  --spacing-section-mobile: 80px;
+
+  --radius-card: 24px;
+  --radius-glass: 28px;
+  --radius-button: 999px;
+  
+  --ease-primary: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-luxury: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-micro: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+body {
+  background-color: var(--color-midnight);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.text-hero {
+  font-family: var(--font-hero);
+  font-weight: 300;
+  font-size: var(--text-hero);
+  line-height: 1.1;
+  letter-spacing: -2px;
+}
+
+.text-button {
+  font-family: var(--font-button);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Glass UI Utilities */
+.glass-panel {
+  background-color: var(--color-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-glass);
+}
+
+.glass-card {
+  background-color: var(--color-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Section Spacing */
+.section-padding {
+  padding-top: var(--spacing-section-mobile);
+  padding-bottom: var(--spacing-section-mobile);
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: var(--spacing-section-tablet);
+    padding-bottom: var(--spacing-section-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: var(--spacing-section-desktop);
+    padding-bottom: var(--spacing-section-desktop);
+  }
+}
+
+/* Container */
+.container-luxury {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .container-luxury {
+    padding: 0 48px;
+  }
+}
+
+/* Lenis */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

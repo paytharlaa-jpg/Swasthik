@@ -30,7 +30,7 @@ export function ContactExperience() {
   }, []);
 
   return (
-    <section ref={containerRef} className="section-padding relative overflow-hidden bg-midnight">
+    <section ref={containerRef} id="appointment" className="section-padding relative overflow-hidden bg-midnight scroll-mt-24">
       <div className="absolute inset-0 z-0">
         <Image 
           src="/images/luxury_apartment_interior_1785743347556.png"

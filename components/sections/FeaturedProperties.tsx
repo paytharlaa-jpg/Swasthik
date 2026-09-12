@@ -81,7 +81,7 @@ export function FeaturedProperties() {
   }, []);
 
   return (
-    <section ref={containerRef} className="section-padding bg-midnight text-ivory relative">
+    <section ref={containerRef} id="treatments" className="section-padding bg-midnight text-ivory relative scroll-mt-24">
       <div className="container-luxury">
         <div className="mb-24">
           <h2 className="text-h2 font-heading mb-4 text-gold">Specialized Treatments</h2>

@@ -48,7 +48,7 @@ export function Header() {
         </nav>
 
         <a 
-          href="https://api.whatsapp.com/send/?phone=918367495666&text=Hello%2521%2520I%2520want%2520to%2520book%2520Free%2520Consultation%2520and%2520want%2520to%2520know%2520more%2520about%2520Offer&type=phone_number&app_absent=0&utm_source=ig"
+          href="https://wa.me/918367495666?text=Hello!%20I%20want%20to%20book%20Free%20Consultation%20and%20want%20to%20know%20more%20about%20Offer"
           target="_blank"
           rel="noopener noreferrer"
           className="hidden md:flex items-center gap-2 border border-gold text-gold px-6 py-2 rounded-full uppercase tracking-widest text-xs font-semibold hover:bg-gold hover:text-midnight transition-colors"

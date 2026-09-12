@@ -87,7 +87,7 @@ export function ContactExperience() {
                   Skip the wait. Message us directly on WhatsApp to book your consultation instantly. Our team is ready to assist you.
                 </p>
                 <a 
-                  href="https://api.whatsapp.com/send/?phone=918367495666&text=Hello%2521%2520I%2520want%2520to%2520book%2520Free%2520Consultation%2520and%2520want%2520to%2520know%2520more%2520about%2520Offer&type=phone_number&app_absent=0&utm_source=ig"
+                  href="https://wa.me/918367495666?text=Hello!%20I%20want%20to%20book%20Free%20Consultation%20and%20want%20to%20know%20more%20about%20Offer"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="relative overflow-hidden bg-[#25D366] text-white py-5 px-8 rounded-full uppercase tracking-[2px] font-semibold hover:bg-[#128C7E] transition-colors duration-300 w-full md:w-auto self-start flex items-center justify-center gap-4 shadow-lg shadow-[#25D366]/20"

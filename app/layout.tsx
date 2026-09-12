@@ -55,7 +55,7 @@ export default function RootLayout({
           
           {/* Floating WhatsApp Button */}
           <a
-            href="https://api.whatsapp.com/send/?phone=918367495666&text=Hello%2521%2520I%2520want%2520to%2520book%2520Free%2520Consultation%2520and%2520want%2520to%2520know%2520more%2520about%2520Offer&type=phone_number&app_absent=0&utm_source=ig"
+            href="https://wa.me/918367495666?text=Hello!%20I%20want%20to%20book%20Free%20Consultation%20and%20want%20to%20know%20more%20about%20Offer"
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 flex items-center justify-center"

@@ -6,5 +6,5 @@ export function getFramePath(index: number): string {
     Math.max(0, index)
   );
 
-  return `/hero-frames/frame_${String(safeIndex).padStart(6, "0")}.png`;
+  return `/hero-frames/frame_${String(safeIndex).padStart(6, "0")}.png?v=dussehra`;
 }

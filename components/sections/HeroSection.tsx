@@ -19,8 +19,8 @@ export function HeroSection() {
         {/* Festive Auspicious Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/15 border border-gold/40 text-amber-300 text-xs md:text-sm font-semibold tracking-wider uppercase mb-3 sm:mb-4 backdrop-blur-md shadow-[0_0_20px_rgba(212,175,55,0.25)]">
           <Sparkles className="w-3.5 h-3.5 text-gold animate-pulse" />
-          <span>Ganesh Chaturthi Festive Care</span>
-          <span>🕉️</span>
+          <span>Dussehra Festive Care</span>
+          <span>🏹</span>
         </div>
 
         {/* Swasthik Ayurveda Grand Brand Logo */}
@@ -62,22 +62,22 @@ export function HeroSection() {
 
       </div>
 
-      {/* 2. Mid-Scroll Divine Festive Blessing Overlay (Emerges as Ganesha reveals full form) */}
+      {/* 2. Mid-Scroll Divine Festive Blessing Overlay (Emerges as Divine Arrow journeys forward) */}
       <div className="hero-blessing-content absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 opacity-0 pointer-events-none">
         <div className="max-w-2xl mx-auto bg-midnight/85 backdrop-blur-xl border border-gold/40 p-6 sm:p-9 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] pointer-events-auto">
           
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/15 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-widest mb-3 sm:mb-4">
-            <span>🌺</span>
-            <span>Auspicious Healing Energy</span>
-            <span>🌺</span>
+            <span>🏹</span>
+            <span>Vijayadashami Healing Energy</span>
+            <span>🏹</span>
           </div>
 
           <h2 className="text-xl sm:text-3xl md:text-4xl font-heading text-ivory font-bold mb-2.5 sm:mb-3 tracking-wide">
-            May Vighnaharta Remove All Obstacles to Health
+            Conquer Chronic Pain This Dussehra
           </h2>
 
           <p className="text-xs sm:text-sm md:text-base text-ivory/80 leading-relaxed mb-5 sm:mb-6 font-light">
-            Embrace classical Ayurvedic therapies designed to heal the root cause of spinal and musculoskeletal pain without invasive surgery.
+            Just as Lord Rama&apos;s celestial arrow triumphs over evil, embrace authentic Ayurvedic therapies designed to strike down the root cause of spinal and musculoskeletal pain without surgery.
           </p>
 
           <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-5 sm:mb-6 text-left">

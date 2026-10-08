@@ -184,8 +184,8 @@ export function HeroFrameSequence({ showDiagnostics = false, children }: HeroFra
           trigger: section,
           pin: true,
           start: "top top",
-          end: "+=320%",
-          scrub: 0.5,
+          end: "+=550%",
+          scrub: 0.8,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const progress = self.progress;
@@ -200,8 +200,8 @@ export function HeroFrameSequence({ showDiagnostics = false, children }: HeroFra
         },
       });
 
-      // Synchronized text animations matching the Ganesha camera motion:
-      // Phase 1 (0% -> 25% scroll): Initial branding stays clear, then elevates and dissolves
+      // Synchronized text animations matching the Dussehra arrow journey camera motion:
+      // Phase 1 (0% -> 25% scroll): Initial branding stays clear as Rama draws the bow, then elevates and dissolves
       tl.to(".hero-primary-content", {
         opacity: 0,
         y: -40,
@@ -216,7 +216,7 @@ export function HeroFrameSequence({ showDiagnostics = false, children }: HeroFra
         ease: "power2.out",
       }, 0.1);
 
-      // Phase 2 (30% -> 75% scroll): Divine festive blessing appears over full statue
+      // Phase 2 (30% -> 75% scroll): Divine festive blessing appears as golden arrow journeys forward
       tl.fromTo(
         ".hero-blessing-content",
         { opacity: 0, y: 35, scale: 0.92 },
@@ -224,7 +224,7 @@ export function HeroFrameSequence({ showDiagnostics = false, children }: HeroFra
         0.8
       );
 
-      // Phase 3 (75% -> 100% scroll): Blessing fades away to showcase complete wide statue
+      // Phase 3 (75% -> 100% scroll): Blessing fades away to showcase grand victory fireworks celebration
       tl.to(
         ".hero-blessing-content",
         { opacity: 0, y: -30, scale: 0.96, duration: 0.8, ease: "power2.in" },

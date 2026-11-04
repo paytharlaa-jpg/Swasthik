@@ -12,12 +12,12 @@ export function FloatingContact() {
   const phoneUrl = contactConfig.getPhoneUrl();
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-body">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 font-body">
       {/* Expanded Menu */}
       {isOpen && (
         <div className="mb-3 flex flex-col items-end gap-2.5 animate-in fade-in slide-in-from-bottom-4 duration-200">
           {/* Quick Doctor Consult Info */}
-          <div className="bg-navy-deep/95 border border-gold/30 rounded-2xl p-4 shadow-2xl backdrop-blur-md max-w-xs text-right text-ivory">
+          <div className="bg-navy-deep/95 border border-gold/30 rounded-2xl p-4 shadow-2xl backdrop-blur-md max-w-[280px] sm:max-w-xs text-right text-ivory">
             <p className="text-xs text-gold font-semibold uppercase tracking-wider mb-1">
               Consultation Desk
             </p>

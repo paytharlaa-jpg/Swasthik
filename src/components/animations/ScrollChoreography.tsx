@@ -31,8 +31,8 @@ export function ScrollChoreography() {
         ".anim-heading, main h1, main h2:not(.no-anim), .section-title"
       );
       headings.forEach((el) => {
-        // Skip elements inside hero canvas or already animated
-        if (el.closest(".hero-canvas-container")) return;
+        // Skip elements inside hero section or canvas container
+        if (el.closest("#hero-section") || el.closest(".hero-canvas-container")) return;
 
         gsap.from(el, {
           scrollTrigger: {
@@ -52,6 +52,8 @@ export function ScrollChoreography() {
         ".anim-subtitle, main .py-12 > p, main .py-16 > p, .section-subtitle"
       );
       subtitles.forEach((el) => {
+        if (el.closest("#hero-section") || el.closest(".hero-canvas-container")) return;
+
         gsap.from(el, {
           scrollTrigger: {
             trigger: el,
@@ -69,6 +71,8 @@ export function ScrollChoreography() {
       // 3. Status Badges & Pill Tags
       const badges = getUnique(".anim-badge, main .inline-flex.rounded-full");
       badges.forEach((el) => {
+        if (el.closest("#hero-section") || el.closest(".hero-canvas-container")) return;
+
         gsap.from(el, {
           scrollTrigger: {
             trigger: el,

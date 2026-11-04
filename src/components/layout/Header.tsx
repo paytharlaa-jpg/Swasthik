@@ -42,10 +42,10 @@ export function Header() {
             : "bg-transparent py-5"
         )}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="relative z-50 flex items-center gap-3">
-            <div className="relative w-44 h-12 md:w-52 md:h-14">
+            <div className="relative w-36 h-10 sm:w-44 sm:h-12 md:w-52 md:h-14">
               <Image
                 src="/images/brand/swasthik-ayurveda-logo.png"
                 alt={siteConfig.name}

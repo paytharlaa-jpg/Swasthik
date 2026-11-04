@@ -286,6 +286,14 @@ export class CelestialSky {
     }
   }
 
+  public setMobile(isMobile: boolean) {
+    const targetX = isMobile ? 2.6 : 6.8;
+    const targetY = isMobile ? 8.2 : 7.5;
+    if (this.moonMesh) this.moonMesh.position.set(targetX, targetY, -34.0);
+    if (this.moonHalo) this.moonHalo.position.set(targetX, targetY, -33.8);
+    if (this.moonLight) this.moonLight.position.set(targetX, targetY, -32.5);
+  }
+
   public dispose() {
     this.geometries.forEach((g) => g.dispose());
     this.materials.forEach((m) => m.dispose());

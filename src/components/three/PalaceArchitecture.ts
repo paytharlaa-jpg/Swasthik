@@ -26,11 +26,11 @@ export class PalaceArchitecture {
     // Base parabolic arch + 5 distinct harmonic scallops + central pointed apex
     const baseHeight = 5.2;
     const apexHeight = 7.6;
-    const parabolic = (1 - normX * normX);
+    const parabolic = Math.max(0, 1 - normX * normX);
 
     // 5 Scallop cusps along the arch
     const cuspFreq = Math.PI * 5;
-    const scallops = Math.sin(Math.abs(normX) * cuspFreq) * 0.22 * Math.pow(parabolic, 0.5);
+    const scallops = Math.sin(Math.abs(normX) * cuspFreq) * 0.22 * Math.sqrt(parabolic);
 
     // Pointed Gothic/Mehrab apex peak at center
     const centerPoint = Math.exp(-Math.abs(normX) * 6.0) * 0.45;

@@ -111,8 +111,11 @@ export function DiwaliScene({ children }: DiwaliSceneProps) {
     // 11. Interactive Camera Parallax & Spring Damping
     let mouseX = 0;
     let mouseY = 0;
+    let baseCameraZ = 17.2;
+    let baseCameraY = 2.7;
     let targetCameraX = 0;
     let targetCameraY = 2.7;
+    let isMobile = false;
 
     const handlePointerMove = (e: MouseEvent | TouchEvent) => {
       let clientX = 0;
@@ -130,41 +133,115 @@ export function DiwaliScene({ children }: DiwaliSceneProps) {
 
       const halfW = window.innerWidth / 2;
       const halfH = window.innerHeight / 2;
-      mouseX = (clientX - halfW) / halfW;
-      mouseY = (clientY - halfH) / halfH;
+      mouseX = (clientX - halfW) / (halfW || 1);
+      mouseY = (clientY - halfH) / (halfH || 1);
 
-      targetCameraX = mouseX * 2.0;
-      targetCameraY = 2.7 - mouseY * 0.8;
+      const parallaxX = isMobile ? 0.6 : 1.8;
+      const parallaxY = isMobile ? 0.35 : 0.7;
+
+      targetCameraX = mouseX * parallaxX;
+      targetCameraY = baseCameraY - mouseY * parallaxY;
     };
 
     window.addEventListener("mousemove", handlePointerMove, { passive: true });
     window.addEventListener("touchmove", handlePointerMove, { passive: true });
 
     // 12. Interactive Cracker Trigger on Click / Tap in the Sky!
-    const handleClick = (e: MouseEvent) => {
+    const launchCrackerAt = (clientX: number, clientY: number) => {
       if (!rocketSystem) return;
 
-      const normX = (e.clientX / window.innerWidth) * 2 - 1;
-      const normY = -(e.clientY / window.innerHeight) * 2 + 1;
+      const normX = (clientX / window.innerWidth) * 2 - 1;
+      const normY = -(clientY / window.innerHeight) * 2 + 1;
 
-      // Project onto distant sky coordinates at z ≈ -18
-      const targetWorldX = normX * 14;
-      const targetWorldY = 2.7 + normY * 7.5;
+      // Project onto distant sky coordinates
+      const targetWorldX = normX * (isMobile ? 8.5 : 14.0);
+      const targetWorldY = baseCameraY + normY * (isMobile ? 5.5 : 7.5);
 
       rocketSystem.launchInteractiveCracker(targetWorldX, Math.max(5.0, targetWorldY));
     };
 
-    container.addEventListener("click", handleClick);
+    const handleClick = (e: MouseEvent) => {
+      launchCrackerAt(e.clientX, e.clientY);
+    };
 
-    // 13. Responsive Canvas Resize
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        // Trigger if touching within upper 65% of viewport (festive sky region)
+        if (e.touches[0].clientY < window.innerHeight * 0.65) {
+          launchCrackerAt(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }
+    };
+
+    container.addEventListener("click", handleClick);
+    container.addEventListener("touchstart", handleTouchStart, { passive: true });
+
+    // 13. Dynamic Mobile & Desktop Responsive Framing
     const handleResize = () => {
       if (!container) return;
       const width = container.clientWidth;
       const height = container.clientHeight;
-      camera.aspect = width / height;
+      if (width === 0 || height === 0) return;
+
+      const aspect = width / height;
+      camera.aspect = aspect;
+
+      if (aspect < 1.0) {
+        // Mobile & Portrait Viewports:
+        // Position camera back so the majestic Indian Palace Arch, Toran, and Happy Diwali
+        // fit comfortably within portrait framing without any horizontal clipping.
+        isMobile = true;
+        baseCameraZ = 22.8;
+        baseCameraY = 3.3;
+
+        // Desired horizontal span at arch (z = 8.6)
+        const distToArch = baseCameraZ - 8.6; // 14.2 units
+        const desiredHalfWidth = 7.2;
+        const halfTanH = desiredHalfWidth / distToArch;
+        const halfTanV = halfTanH / aspect;
+        const computedFov = 2 * Math.atan(halfTanV) * (180 / Math.PI);
+
+        // Clamp FOV to natural lens range [52°, 78°] to prevent excessive edge distortion
+        camera.fov = Math.min(78, Math.max(52, computedFov));
+
+        // Scale palace arch and toran to flank the portrait screen harmoniously
+        const archScale = Math.min(1.0, Math.max(0.68, aspect * 1.18));
+        palace.group.scale.setScalar(archScale);
+        if (toranGarland) toranGarland.group.scale.setScalar(archScale);
+
+        // Centerpiece scaling: scaled to ~0.58 so it spans ~5.0 units across
+        // Floating gracefully in the upper-mid area (y = 3.6, z = 9.6) above healthcare copy
+        if (centerpiece) {
+          centerpiece.group.scale.setScalar(0.58);
+          centerpiece.group.position.set(0, 3.6, 9.6);
+        }
+
+        celestialSky.setMobile(true);
+      } else {
+        // Desktop & Landscape Viewports
+        isMobile = false;
+        baseCameraZ = 17.2;
+        baseCameraY = 2.7;
+        camera.fov = 45;
+
+        palace.group.scale.setScalar(1.0);
+        if (toranGarland) toranGarland.group.scale.setScalar(1.0);
+
+        if (centerpiece) {
+          centerpiece.group.scale.setScalar(1.0);
+          centerpiece.group.position.set(0, 2.8, 9.6);
+        }
+
+        celestialSky.setMobile(false);
+      }
+
+      camera.position.z = baseCameraZ;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
+
+    // Run initial framing setup
+    handleResize();
 
     const resizeObserver = new ResizeObserver(() => {
       handleResize();
@@ -192,10 +269,10 @@ export function DiwaliScene({ children }: DiwaliSceneProps) {
       lastTime = currentTime;
       const timeSec = currentTime * 0.001;
 
-      // Smooth camera interpolation
+      // Smooth camera interpolation towards target parallax
       camera.position.x += (targetCameraX - camera.position.x) * 0.045;
       camera.position.y += (targetCameraY - camera.position.y) * 0.045;
-      camera.lookAt(0, 2.7, 0);
+      camera.lookAt(0, baseCameraY, 0);
 
       // Subsystem updates
       celestialSky.update(timeSec, delta);
@@ -215,6 +292,7 @@ export function DiwaliScene({ children }: DiwaliSceneProps) {
       window.removeEventListener("mousemove", handlePointerMove);
       window.removeEventListener("touchmove", handlePointerMove);
       container.removeEventListener("click", handleClick);
+      container.removeEventListener("touchstart", handleTouchStart);
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
 

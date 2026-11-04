@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
+@theme {
+  --color-midnight: #080a12;
+  --color-navy-deep: #10182b;
+  --color-emerald-deep: #064e3b;
+  --color-emerald: #0b4a36;
+  --color-emerald-light: #10b981;
+  --color-gold: #d4af37;
+  --color-gold-soft: #c8a96a;
+  --color-champagne: #f3dfa0;
+  --color-saffron: #e88b27;
+  --color-ivory: #f7f0e3;
+  --color-white: #ffffff;
+  --color-text-dark: #e8e2d6;
+  --color-muted: #b6b0a5;
+
+  --font-heading: 'Cinzel', 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-midnight: #080a12;
+  --color-navy-deep: #10182b;
+  --color-emerald-deep: #064e3b;
+  --color-emerald: #0b4a36;
+  --color-gold: #d4af37;
+  --color-champagne: #f3dfa0;
+  --color-saffron: #e88b27;
+  --color-ivory: #f7f0e3;
+
+  --font-heading: 'Cinzel', 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-midnight);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Lenis Smooth Scroll Configuration */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* 3D Card Opening & Luxury Glass Enhancements */
+.card-perspective-container {
+  perspective: 1200px;
+}
+
+.anim-card-opening {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+/* 3D Card Opening & Luxury Glass Enhancements */
+.card-perspective-container {
+  perspective: 1200px;
+}
+
+.anim-card-opening {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }

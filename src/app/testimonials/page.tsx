@@ -33,25 +33,25 @@ export default function TestimonialsPage() {
             <span>Real Patient Experiences</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
+          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
             Words of Trust, Relief, and Healing
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
+          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
             Authentic reflections from patients who experienced our conservative, root-cause
             treatment approach for chronic spinal and joint distress.
           </p>
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div className="anim-card-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {testimonialsData.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </div>
 
         {/* Ethical Verification Standards */}
-        <div className="p-8 md:p-12 rounded-3xl bg-navy-deep/40 border border-gold/30 text-center max-w-4xl mx-auto mb-16">
+        <div className="anim-card p-8 md:p-12 rounded-3xl bg-navy-deep/40 border border-gold/30 text-center max-w-4xl mx-auto mb-16">
           <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mx-auto mb-4">
             <ShieldCheck size={24} />
           </div>

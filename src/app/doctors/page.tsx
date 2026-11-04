@@ -33,18 +33,18 @@ export default function DoctorsPage() {
             <span>Clinical Leadership</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
+          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
             Meet the Doctors Behind Your Care
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
+          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
             Experienced Ayurvedic practitioners committed to diagnosing the true root cause of
             musculoskeletal distress and delivering targeted, conservative care.
           </p>
         </div>
 
         {/* Lead Doctor Feature Profile */}
-        <div className="rounded-3xl bg-navy-deep/50 border border-gold/30 p-8 md:p-12 mb-20">
+        <div className="anim-card rounded-3xl bg-navy-deep/50 border border-gold/30 p-8 md:p-12 mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Portrait */}
             <div className="anim-doctor-img lg:col-span-5 flex justify-center">

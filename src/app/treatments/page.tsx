@@ -36,11 +36,11 @@ export default function TreatmentsPage() {
             <span>Targeted Clinical Specialization</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
+          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
             Non-Surgical Spine & Joint Treatments
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
+          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
             Combining traditional Ayurvedic methodologies—such as Kati Vasti, Janu Vasti, and
             precision Agnikarma—with thorough clinical evaluation to restore freedom of movement.
           </p>
@@ -72,7 +72,7 @@ export default function TreatmentsPage() {
         </div>
 
         {/* Medical Safety Disclaimer Strip */}
-        <div className="p-8 md:p-12 rounded-3xl bg-navy-deep/40 border border-gold/30 text-center max-w-4xl mx-auto">
+        <div className="anim-card p-8 md:p-12 rounded-3xl bg-navy-deep/40 border border-gold/30 text-center max-w-4xl mx-auto">
           <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mx-auto mb-4">
             <ShieldCheck size={24} />
           </div>

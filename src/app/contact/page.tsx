@@ -41,11 +41,11 @@ export default function ContactPage() {
             <span>Hyderabad Clinic Location</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
+          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
             Begin Your Healing Journey
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
+          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
             Have a question about your spinal or joint condition? Reach out directly to the Swasthik
             Ayurveda coordination desk to schedule an in-person or remote consultation.
           </p>

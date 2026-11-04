@@ -34,12 +34,12 @@ export default function AboutPage() {
             <span>Rooted in Classical Wisdom</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
+          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
             Traditional Ayurvedic Wisdom.{" "}
             <span className="text-gold">Personalized Healing.</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
+          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
             Swasthik Ayurveda was founded with a singular purpose: to offer authentic,
             evidence-informed classical Ayurvedic care for patients suffering from spinal,
             articular, and chronic pain disorders in Hyderabad.
@@ -141,7 +141,7 @@ export default function AboutPage() {
         </div>
 
         {/* Doctor Feature Card */}
-        <div className="rounded-3xl bg-navy-deep/60 border border-gold/30 p-8 md:p-12 mb-20">
+        <div className="anim-card rounded-3xl bg-navy-deep/60 border border-gold/30 p-8 md:p-12 mb-20">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             <div className="md:col-span-4 flex justify-center">
               <div className="relative w-48 h-64 md:w-56 md:h-72 rounded-2xl overflow-hidden border border-gold/40">
@@ -190,7 +190,7 @@ export default function AboutPage() {
         </div>
 
         {/* Clinic Location & CTA */}
-        <div className="p-8 md:p-12 rounded-3xl bg-midnight border border-white/10 text-center max-w-3xl mx-auto">
+        <div className="anim-card p-8 md:p-12 rounded-3xl bg-midnight border border-white/10 text-center max-w-3xl mx-auto">
           <h3 className="text-2xl md:text-3xl font-heading font-semibold text-ivory mb-4">
             Visit Swasthik Ayurveda in Hyderabad
           </h3>

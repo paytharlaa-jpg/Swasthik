@@ -37,11 +37,11 @@ export default function BlogListingPage() {
             <span>Clinical Knowledge & Patient Education</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
+          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
             Spine, Joint & Wellness Insights
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
+          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
             Empowering patients with clear, medically reviewed information on musculoskeletal
             health, anatomical diagnostics, and classical Ayurvedic therapy.
           </p>
@@ -49,7 +49,7 @@ export default function BlogListingPage() {
 
         {/* Featured Editorial Article */}
         {featuredPost && (
-          <div className="mb-20">
+          <div className="mb-20 anim-card">
             <div className="group rounded-3xl bg-navy-deep/60 border border-gold/30 hover:border-gold/60 overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 md:p-10 transition-all duration-300">
               <div className="lg:col-span-6">
                 <div className="relative w-full h-72 sm:h-96 rounded-2xl overflow-hidden bg-midnight">
@@ -114,10 +114,10 @@ export default function BlogListingPage() {
 
         {/* All Articles Grid */}
         <div className="mb-20">
-          <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-8">
+          <h2 className="anim-heading text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-8">
             All Clinical Articles
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="anim-blog-grid grid grid-cols-1 md:grid-cols-3 gap-8">
             {blogPosts.map((post) => (
               <BlogCard key={post.slug} post={post} />
             ))}

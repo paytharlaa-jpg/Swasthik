@@ -95,11 +95,11 @@ export default async function ConditionDetailPage({ params }: PageProps) {
               <span>{condition.badge}</span>
             </span>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
+            <h1 className="anim-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
               {condition.heroHeadline}
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body mb-8">
+            <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body mb-8">
               {condition.heroSubheadline}
             </p>
 
@@ -286,7 +286,7 @@ export default async function ConditionDetailPage({ params }: PageProps) {
             <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-8 text-center">
               Related Conditions
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="anim-card-grid grid grid-cols-1 md:grid-cols-3 gap-6">
               {relatedConditions.map((rel) => (
                 <TreatmentCard key={rel.slug} condition={rel} />
               ))}
@@ -295,7 +295,7 @@ export default async function ConditionDetailPage({ params }: PageProps) {
         )}
 
         {/* 8. Medical Safety Disclaimer & Appointment CTA */}
-        <div className="mt-16 p-8 md:p-12 rounded-3xl bg-midnight border border-gold/40 text-center max-w-4xl mx-auto shadow-2xl">
+        <div className="anim-card mt-16 p-8 md:p-12 rounded-3xl bg-midnight border border-gold/40 text-center max-w-4xl mx-auto shadow-2xl">
           <ShieldCheck size={32} className="text-gold mx-auto mb-4" />
           <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-4">
             Arrange Your Consultation with Dr. Krishna Mohan

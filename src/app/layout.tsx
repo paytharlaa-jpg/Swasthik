@@ -54,6 +54,14 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: ["/images/brand/swasthik-ayurveda-logo.png"],
   },
+  icons: {
+    icon: [
+      { url: "/images/brand/swasthik-ayurveda-logo.png", type: "image/png" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    shortcut: "/images/brand/swasthik-ayurveda-logo.png",
+    apple: "/images/brand/swasthik-ayurveda-logo.png",
+  },
   robots: {
     index: true,
     follow: true,
@@ -139,6 +147,9 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        <link rel="icon" href="/images/brand/swasthik-ayurveda-logo.png" type="image/png" />
+        <link rel="shortcut icon" href="/images/brand/swasthik-ayurveda-logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/images/brand/swasthik-ayurveda-logo.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

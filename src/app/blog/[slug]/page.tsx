@@ -138,7 +138,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
+          <h1 className="anim-heading text-3xl sm:text-4xl md:text-5xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
             {post.title}
           </h1>
 
@@ -173,7 +173,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </header>
 
         {/* Featured Banner Image */}
-        <div className="relative w-full h-72 sm:h-96 md:h-[460px] rounded-3xl overflow-hidden my-10 border border-white/10 shadow-2xl">
+        <div className="anim-card relative w-full h-72 sm:h-96 md:h-[460px] rounded-3xl overflow-hidden my-10 border border-white/10 shadow-2xl">
           <Image
             src={post.featuredImage}
             alt={post.title}

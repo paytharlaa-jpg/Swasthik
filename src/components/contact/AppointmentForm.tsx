@@ -1,157 +1,117 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, Phone, CheckCircle2 } from "lucide-react";
-import { contactConfig } from "@/config/contact";
+import { ArrowUpRight, Check } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { contactConfig } from "@/config/contact";
+import { conditionsData } from "@/content/treatments/treatmentData";
+
+const DAYS = ["Earliest available", "Tomorrow", "This weekend", "Next week"];
 
 export function AppointmentForm() {
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [condition, setCondition] = useState("Sciatica");
-  const [preferredDay, setPreferredDay] = useState("Today / Earliest Available");
-  const [submitted, setSubmitted] = useState(false);
+  const [condition, setCondition] = useState(conditionsData[0].name);
+  const [day, setDay] = useState(DAYS[0]);
+  const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Hello Swasthik Ayurveda, I would like to book a consultation with ${siteConfig.leadDoctor}.%0A%0A• Patient Name: ${encodeURIComponent(
-      fullName
-    )}%0A• Phone: ${encodeURIComponent(phone)}%0A• Condition/Pain Area: ${encodeURIComponent(
-      condition
-    )}%0A• Preferred Time: ${encodeURIComponent(preferredDay)}`;
-
-    setSubmitted(true);
-    window.open(`https://wa.me/${siteConfig.whatsapp}?text=${message}`, "_blank");
+    const msg = [
+      `Hello Swasthik Ayurveda, I would like to book a consultation with ${siteConfig.leadDoctor}.`,
+      "",
+      `• Name: ${name}`,
+      `• Phone: ${phone}`,
+      `• Condition: ${condition}`,
+      `• Preferred time: ${day}`,
+    ].join("\n");
+    window.open(contactConfig.getWhatsAppUrl(msg), "_blank", "noopener,noreferrer");
+    setSent(true);
   };
 
-  return (
-    <div className="rounded-3xl bg-navy-deep/70 border border-gold/30 p-8 md:p-10 shadow-2xl backdrop-blur-md">
-      <div className="mb-8">
-        <span className="text-xs font-semibold uppercase tracking-widest text-gold block mb-2">
-          Direct Appointment Desk
-        </span>
-        <h3 className="text-2xl md:text-3xl font-heading font-semibold text-ivory mb-2">
-          Consult With Dr. Krishna Mohan
-        </h3>
-        <p className="text-sm text-ivory/70 font-body leading-relaxed">
-          Fill in your details below to instantly connect with our Hyderabad clinic coordination
-          desk via WhatsApp or telephone.
-        </p>
-      </div>
+  const field =
+    "w-full border-0 border-b-2 border-bone/20 bg-transparent py-4 text-xl md:text-2xl font-medium text-bone placeholder:text-bone/30 focus:border-lime focus:outline-none focus:ring-0 transition-colors";
 
-      {submitted ? (
-        <div className="p-6 rounded-2xl bg-emerald/20 border border-emerald/40 text-center animate-in fade-in">
-          <CheckCircle2 size={36} className="text-emerald mx-auto mb-3" />
-          <h4 className="text-lg font-heading font-semibold text-ivory mb-2">
-            Consultation Request Initiated
-          </h4>
-          <p className="text-sm text-ivory/80 font-body mb-6">
-            Your WhatsApp chat has opened. Our clinic desk will confirm available doctor slots with
-            you right away.
+  return (
+    <div className="rounded-[28px] bg-saffron p-7 text-ink md:p-10">
+      <p className="eyebrow">Appointment desk</p>
+      <h2 className="display mt-3 text-6xl md:text-7xl">Book a consult</h2>
+      <p className="mt-3 max-w-md text-ink/75">
+        Fill this in and WhatsApp opens with your details ready to send. We reply with available slots.
+      </p>
+
+      {sent ? (
+        <div className="mt-10 rounded-2xl bg-ink p-8 text-bone">
+          <Check className="text-lime" size={40} />
+          <p className="display mt-4 text-5xl">Request ready</p>
+          <p className="mt-3 text-bone/75">
+            WhatsApp should have opened in a new tab. Press send there and the clinic will confirm your slot.
           </p>
-          <button
-            onClick={() => setSubmitted(false)}
-            className="text-xs uppercase tracking-wider text-gold hover:underline"
-          >
-            Submit Another Request &rarr;
+          <button type="button" onClick={() => setSent(false)} className="mt-6 font-medium text-lime underline underline-offset-4">
+            Send another request
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4 font-body">
-          <div>
-            <label className="block text-xs uppercase tracking-wider text-ivory/70 mb-1.5 font-medium">
-              Full Name *
-            </label>
+        <form onSubmit={submit} className="mt-8 rounded-2xl bg-ink p-6 md:p-8 space-y-6">
+          <label className="block">
+            <span className="eyebrow text-ash">Full name *</span>
+            <input required value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Your name" className={field} />
+          </label>
+          <label className="block">
+            <span className="eyebrow text-ash">Phone *</span>
             <input
-              type="text"
               required
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="e.g. Ramesh Kumar"
-              className="w-full px-4 py-3 rounded-xl bg-midnight/70 border border-white/15 focus:border-gold focus:outline-none text-ivory text-sm placeholder:text-ivory/30"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs uppercase tracking-wider text-ivory/70 mb-1.5 font-medium">
-              Phone Number *
-            </label>
-            <input
               type="tel"
-              required
+              inputMode="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="e.g. +91 98765 43210"
-              className="w-full px-4 py-3 rounded-xl bg-midnight/70 border border-white/15 focus:border-gold focus:outline-none text-ivory text-sm placeholder:text-ivory/30"
+              autoComplete="tel"
+              placeholder="+91"
+              className={field}
             />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs uppercase tracking-wider text-ivory/70 mb-1.5 font-medium">
-                Primary Pain / Condition
-              </label>
-              <select
-                value={condition}
-                onChange={(e) => setCondition(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-midnight/70 border border-white/15 focus:border-gold focus:outline-none text-ivory text-sm"
-              >
-                <option value="Sciatica">Sciatica (Radiating Leg Pain)</option>
-                <option value="Slip Disc">Slip Disc / Herniation</option>
-                <option value="L4-L5 Disc Bulge">L4-L5 Disc Bulge</option>
-                <option value="Lower Back Pain">Lower Back Pain</option>
-                <option value="Knee Pain">Knee Joint Pain</option>
-                <option value="Knee Osteoarthritis">Knee Osteoarthritis</option>
-                <option value="Cervical Spondylosis">Cervical Spondylosis (Neck/Arm)</option>
-                <option value="General Spine Assessment">General Spine Assessment</option>
-              </select>
+          </label>
+          <fieldset>
+            <legend className="eyebrow text-ash">Where does it hurt?</legend>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {[...conditionsData.map((c) => c.name.replace(/ \(.*\)/, "")), "Not sure"].map((c) => (
+                <button
+                  type="button"
+                  key={c}
+                  onClick={() => setCondition(c)}
+                  aria-pressed={condition === c}
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                    condition === c ? "border-lime bg-lime text-ink" : "border-bone/20 text-bone/80 hover:border-bone/50"
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
             </div>
-
-            <div>
-              <label className="block text-xs uppercase tracking-wider text-ivory/70 mb-1.5 font-medium">
-                Preferred Day
-              </label>
-              <select
-                value={preferredDay}
-                onChange={(e) => setPreferredDay(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-midnight/70 border border-white/15 focus:border-gold focus:outline-none text-ivory text-sm"
-              >
-                <option value="Today / Earliest Available">Today / Earliest Available</option>
-                <option value="Tomorrow">Tomorrow</option>
-                <option value="This Weekend">This Weekend</option>
-                <option value="Next Week">Next Week</option>
-              </select>
+          </fieldset>
+          <fieldset>
+            <legend className="eyebrow text-ash">When?</legend>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {DAYS.map((d) => (
+                <button
+                  type="button"
+                  key={d}
+                  onClick={() => setDay(d)}
+                  aria-pressed={day === d}
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                    day === d ? "border-saffron bg-saffron text-ink" : "border-bone/20 text-bone/80 hover:border-bone/50"
+                  }`}
+                >
+                  {d}
+                </button>
+              ))}
             </div>
-          </div>
-
-          <div className="pt-2">
-            <button
-              type="submit"
-              className="w-full py-4 rounded-xl bg-gradient-to-r from-gold to-saffron hover:from-gold-soft hover:to-gold text-midnight font-heading font-semibold text-base transition-all duration-300 shadow-[0_0_24px_rgba(212,175,55,0.3)] hover:scale-[1.01] flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <MessageCircle size={18} />
-              <span>Request Consultation on WhatsApp</span>
-            </button>
-          </div>
-
-          <div className="relative flex py-2 items-center">
-            <div className="flex-grow border-t border-white/10" />
-            <span className="flex-shrink mx-4 text-xs text-ivory/40 uppercase tracking-widest">
-              Or Call Directly
-            </span>
-            <div className="flex-grow border-t border-white/10" />
-          </div>
-
-          <a
-            href={contactConfig.getPhoneUrl()}
-            className="w-full py-3.5 rounded-xl border border-gold/40 hover:bg-gold/10 text-gold font-heading font-semibold text-sm transition-all flex items-center justify-center gap-2"
-          >
-            <Phone size={16} />
-            <span>Call Clinic: {siteConfig.phone}</span>
-          </a>
+          </fieldset>
+          <button type="submit" className="btn btn-lime w-full justify-center !py-5 text-lg">
+            Send on WhatsApp <ArrowUpRight size={20} />
+          </button>
+          <p className="text-xs text-ash">Your details go only into the WhatsApp message you send. Nothing is stored on this website.</p>
         </form>
       )}
     </div>
   );
 }
-

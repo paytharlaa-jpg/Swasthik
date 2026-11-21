@@ -1,340 +1,271 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Accordion } from "@/components/ui/Accordion";
-import { TreatmentCard } from "@/components/treatments/TreatmentCard";
+import { ArrowUpRight, TriangleAlert } from "lucide-react";
 import { conditionsData } from "@/content/treatments/treatmentData";
-import { siteConfig } from "@/config/site";
+import { therapiesData } from "@/content/therapies/therapyData";
+import { Crumbs, CtaBand, Faq, Label, Tag } from "@/components/ui/blocks";
 import { contactConfig } from "@/config/contact";
-import {
-  ShieldCheck,
-  CheckCircle2,
-  AlertCircle,
-  MessageCircle,
-  Phone,
-  Sparkles,
-  ArrowRight,
-} from "lucide-react";
+import { siteConfig } from "@/config/site";
+import { pageMetadata, jsonLd, absoluteUrl, clinicRef, physicianRef } from "@/lib/seo";
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
+type Props = { params: Promise<{ slug: string }> };
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return conditionsData.map((c) => ({ slug: c.slug }));
 }
 
-export async function generateStaticParams() {
-  return conditionsData.map((c) => ({
-    slug: c.slug,
-  }));
-}
+const shortName = (name: string) => name.replace(/ \(.*\)/, "");
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const condition = conditionsData.find((c) => c.slug === slug);
-  if (!condition) {
-    return {
-      title: "Treatment Not Found | Swasthik Ayurveda",
-    };
-  }
-
-  return {
-    title: `${condition.name} Treatment in Hyderabad | Swasthik Ayurveda`,
-    description: condition.shortDescription,
+  const c = conditionsData.find((x) => x.slug === slug);
+  if (!c) return {};
+  const n = shortName(c.name);
+  return pageMetadata({
+    title: `${n} Treatment in Hyderabad | Ayurvedic Care Without Surgery`,
+    description: `${c.shortDescription} Non-surgical Ayurvedic ${n.toLowerCase()} treatment in Kukatpally, Hyderabad by ${siteConfig.leadDoctor}. Book on WhatsApp.`,
+    path: `/treatments/${c.slug}`,
+    image: c.image,
     keywords: [
-      `${condition.name} treatment Hyderabad`,
-      `Ayurvedic care for ${condition.name}`,
-      `${condition.name} Kukatpally`,
-      `Dr Krishna Mohan ${condition.name}`,
-      "Ayurvedic spine doctor Hyderabad",
+      `${n} treatment Hyderabad`,
+      `${n} Ayurvedic treatment`,
+      `${n} treatment Kukatpally`,
+      `${n} treatment without surgery`,
+      `best Ayurvedic doctor for ${n.toLowerCase()} Hyderabad`,
+      `${siteConfig.leadDoctor} ${n}`,
     ],
-    openGraph: {
-      title: `${condition.name} Treatment in Hyderabad | Swasthik Ayurveda`,
-      description: condition.shortDescription,
-      url: `https://www.swastikayurveda.com/treatments/${condition.slug}`,
-      siteName: siteConfig.name,
-      images: [
-        {
-          url: condition.image,
-          width: 800,
-          height: 600,
-          alt: condition.name,
-        },
-      ],
+  });
+}
+
+export default async function ConditionPage({ params }: Props) {
+  const { slug } = await params;
+  const c = conditionsData.find((x) => x.slug === slug);
+  if (!c) notFound();
+
+  const n = shortName(c.name);
+  const index = conditionsData.findIndex((x) => x.slug === slug);
+  const related = conditionsData.filter((x) => c.relatedConditionSlugs.includes(x.slug));
+  const therapies = therapiesData.filter((t) => t.helpsWith.includes(c.slug));
+  const next = conditionsData[(index + 1) % conditionsData.length];
+  const bookMsg = `Hello Dr. Krishna Mohan, I would like to consult for ${n}. Please share available appointment slots.`;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "@id": `${absoluteUrl(`/treatments/${c.slug}`)}#page`,
+    url: absoluteUrl(`/treatments/${c.slug}`),
+    name: c.heroHeadline,
+    description: c.shortDescription,
+    inLanguage: "en-IN",
+    lastReviewed: "2026-11-21",
+    reviewedBy: physicianRef,
+    publisher: clinicRef,
+    about: {
+      "@type": "MedicalCondition",
+      name: c.name,
+      description: c.overview[0],
+      signOrSymptom: c.symptoms.map((s) => ({ "@type": "MedicalSignOrSymptom", name: s })),
+      riskFactor: c.contributingFactors.map((s) => ({ "@type": "MedicalRiskFactor", name: s })),
+      possibleTreatment: c.therapiesOffered.map((t) => ({ "@type": "MedicalTherapy", name: t })),
     },
   };
-}
-
-export default async function ConditionDetailPage({ params }: PageProps) {
-  const { slug } = await params;
-  const condition = conditionsData.find((c) => c.slug === slug);
-
-  if (!condition) {
-    notFound();
-  }
-
-  const relatedConditions = conditionsData.filter((c) =>
-    condition.relatedConditionSlugs.includes(c.slug)
-  );
 
   return (
-    <main className="min-h-screen bg-midnight text-ivory pt-28 pb-20 font-body">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Breadcrumb Navigation */}
-        <Breadcrumbs
-          items={[
-            { label: "Treatments", href: "/treatments" },
-            { label: condition.name },
-          ]}
-        />
+    <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(schema)} />
 
-        {/* Condition-Specific Hero */}
-        <div className="py-12 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-widest mb-4">
-              <Sparkles size={14} />
-              <span>{condition.badge}</span>
-            </span>
-
-            <h1 className="anim-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
-              {condition.heroHeadline}
-            </h1>
-
-            <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body mb-8">
-              {condition.heroSubheadline}
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <a
-                href={contactConfig.getWhatsAppUrl(
-                  `Hello Dr. Krishna Mohan, I would like to consult for ${condition.name}. Please share available appointment slots.`
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gold hover:bg-gold-soft text-midnight font-heading font-semibold text-sm transition-all shadow-[0_0_24px_rgba(212,175,55,0.3)] hover:scale-105"
-              >
-                <MessageCircle size={16} />
-                <span>Book WhatsApp Consultation</span>
-              </a>
-
-              <a
-                href={contactConfig.getPhoneUrl()}
-                className="inline-flex items-center gap-2 px-6 py-4 rounded-full border border-gold/40 text-gold hover:bg-gold/10 font-heading font-semibold text-sm transition-all"
-              >
-                <Phone size={15} />
-                <span>Call Clinic: {siteConfig.phone}</span>
-              </a>
-            </div>
+      {/* Hero */}
+      <section className="relative overflow-hidden pt-28 md:pt-36">
+        <div className="wrap">
+          <Crumbs items={[{ name: "Conditions", path: "/treatments" }, { name: n, path: `/treatments/${c.slug}` }]} />
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <Tag tone="saffron">{c.badge}</Tag>
+            <span className="eyebrow text-ash">Condition {String(index + 1).padStart(2, "0")} / {String(conditionsData.length).padStart(2, "0")}</span>
           </div>
-
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-md h-72 sm:h-96 rounded-3xl overflow-hidden border border-gold/30 shadow-2xl">
-              <Image
-                src={condition.image}
-                alt={condition.name}
-                fill
-                priority
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-midnight/80 backdrop-blur-md border border-white/10 text-xs text-gold">
-                Personalized Care Supervised by {siteConfig.leadDoctor}
-              </div>
+          <h1 data-split className="display mt-6 text-[10.2vw] md:text-[6.6vw] lg:text-[6vw]">
+            {n}
+          </h1>
+          <div className="mt-8 grid gap-8 md:grid-cols-12 md:items-end">
+            <p data-reveal className="md:col-span-7 text-xl md:text-2xl font-medium leading-snug">
+              {c.heroHeadline}. <span className="text-bone/60 font-normal">{c.heroSubheadline}</span>
+            </p>
+            <div data-reveal className="md:col-span-5 flex flex-wrap gap-3 md:justify-end">
+              <a href={contactConfig.getWhatsAppUrl(bookMsg)} target="_blank" rel="noopener noreferrer" className="btn btn-saffron">
+                Book for {n} <ArrowUpRight size={18} />
+              </a>
+              <a href={contactConfig.getPhoneUrl()} className="btn btn-ghost">
+                Call clinic
+              </a>
             </div>
           </div>
         </div>
-
-        {/* 1. Patient-Friendly Overview */}
-        <section className="py-12 border-t border-white/10">
-          <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-6">
-            Understanding {condition.name}
-          </h2>
-          <div className="space-y-4 text-sm sm:text-base text-ivory/80 leading-relaxed max-w-4xl">
-            {condition.overview.map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
-          </div>
-        </section>
-
-        {/* 2. Symptoms & Contributing Factors Grid */}
-        <section className="py-12 border-t border-white/10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Symptoms */}
-            <div className="p-8 rounded-3xl bg-navy-deep/40 border border-white/10">
-              <h3 className="text-xl sm:text-2xl font-heading font-semibold text-gold mb-6 flex items-center gap-2">
-                <CheckCircle2 size={20} />
-                <span>Common Symptoms</span>
-              </h3>
-              <ul className="space-y-3.5 text-sm sm:text-base text-ivory/80 leading-relaxed">
-                {condition.symptoms.map((symptom, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-2" />
-                    <span>{symptom}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contributing Factors */}
-            <div className="p-8 rounded-3xl bg-navy-deep/40 border border-white/10">
-              <h3 className="text-xl sm:text-2xl font-heading font-semibold text-champagne mb-6 flex items-center gap-2">
-                <Sparkles size={20} />
-                <span>Contributing Factors</span>
-              </h3>
-              <ul className="space-y-3.5 text-sm sm:text-base text-ivory/80 leading-relaxed">
-                {condition.contributingFactors.map((factor, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-champagne shrink-0 mt-2" />
-                    <span>{factor}</span>
-                  </li>
-                ))}
-              </ul>
+        <div className="mt-14 px-4 md:px-10">
+          <div data-scale-scroll className="duotone relative h-[55svh] md:h-[80vh] overflow-hidden rounded-[28px]">
+            <div data-parallax="0.1" className="absolute -inset-y-[12%] inset-x-0">
+              <Image src={c.image} alt={`${n} Ayurvedic treatment at Swasthik Ayurveda, Kukatpally, Hyderabad`} fill priority sizes="100vw" className="object-cover" />
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* 3. When to Seek Care (Red Flags) */}
-        <section className="py-12 border-t border-white/10">
-          <div className="p-8 rounded-3xl bg-saffron/10 border border-saffron/30">
-            <h3 className="text-xl sm:text-2xl font-heading font-semibold text-saffron mb-4 flex items-center gap-2">
-              <AlertCircle size={22} />
-              <span>When Professional Assessment is Appropriate</span>
-            </h3>
-            <p className="text-sm text-ivory/80 mb-4">
-              Schedule an evaluation with our clinical team if you experience any of the following:
-            </p>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-ivory/90">
-              {condition.whenToSeekCare.map((item, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-saffron shrink-0 mt-1.5" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* 4. Ayurvedic Approach & Therapies Offered */}
-        <section className="py-12 border-t border-white/10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-6">
-              <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-6">
-                How Classical Ayurveda Approaches {condition.name}
-              </h2>
-              <div className="space-y-4 text-sm sm:text-base text-ivory/80 leading-relaxed">
-                {condition.ayurvedicApproach.map((item, i) => (
-                  <p key={i}>{item}</p>
-                ))}
-              </div>
-            </div>
-
-            <div className="lg:col-span-6 p-8 rounded-3xl bg-navy-deep/50 border border-gold/30">
-              <h3 className="text-xl sm:text-2xl font-heading font-semibold text-gold mb-6">
-                Core Therapies Offered at Swasthik
-              </h3>
-              <ul className="space-y-3.5 text-sm sm:text-base text-ivory/90">
-                {condition.therapiesOffered.map((therapy, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-gold/15 text-gold flex items-center justify-center shrink-0 text-xs font-bold">
-                      ✓
-                    </div>
-                    <span>{therapy}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Consultation Steps */}
-        <section className="py-12 border-t border-white/10">
-          <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-8 text-center">
-            Your Consultation Process
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {condition.consultationSteps.map((step) => (
-              <div
-                key={step.step}
-                className="p-6 rounded-2xl bg-navy-deep/40 border border-white/10 flex flex-col justify-between"
-              >
-                <div>
-                  <span className="text-2xl font-heading font-bold text-gold font-mono block mb-2">
-                    0{step.step}
-                  </span>
-                  <h4 className="text-base font-heading font-semibold text-ivory mb-2">
-                    {step.title}
-                  </h4>
-                  <p className="text-xs sm:text-sm text-ivory/70 leading-relaxed font-body">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* 6. Frequently Asked Questions */}
-        <section className="py-12 border-t border-white/10">
-          <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-8 text-center">
-            Frequently Asked Questions About {condition.name}
-          </h2>
-          <Accordion items={condition.faqs} />
-        </section>
-
-        {/* 7. Related Conditions */}
-        {relatedConditions.length > 0 && (
-          <section className="py-12 border-t border-white/10">
-            <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-8 text-center">
-              Related Conditions
+      {/* Overview */}
+      <section className="py-24 md:py-32">
+        <div className="wrap grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-4">
+            <Label n="01">Understanding it</Label>
+            <h2 data-split className="display mt-5 text-6xl md:text-7xl">
+              What is {n.toLowerCase()}?
             </h2>
-            <div className="anim-card-grid grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedConditions.map((rel) => (
-                <TreatmentCard key={rel.slug} condition={rel} />
+          </div>
+          <div className="md:col-span-8 prose-bold text-lg md:text-xl text-bone/80 leading-relaxed" data-reveal>
+            {c.overview.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Symptoms / causes */}
+      <section className="border-t hairline">
+        <div className="wrap grid md:grid-cols-2">
+          {[
+            { title: "Symptoms", list: c.symptoms, n: "02", tone: "text-saffron" },
+            { title: "Causes & risk factors", list: c.contributingFactors, n: "03", tone: "text-lime" },
+          ].map((b, bi) => (
+            <div key={b.title} className={`py-16 md:py-20 ${bi ? "md:border-l hairline md:pl-12 border-t md:border-t-0" : "md:pr-12"}`}>
+              <Label n={b.n}>{b.title}</Label>
+              <ul className="mt-8" data-stagger>
+                {b.list.map((s, i) => (
+                  <li key={i} className="flex gap-5 border-b hairline py-5 text-lg leading-snug">
+                    <span className={`display text-2xl ${b.tone}`}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-bone/85">{s}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Red flags */}
+      <section className="bg-saffron text-ink">
+        <div className="wrap grid gap-8 py-16 md:grid-cols-12 md:py-20">
+          <div className="md:col-span-4">
+            <TriangleAlert size={40} />
+            <h2 className="display mt-4 text-5xl md:text-6xl">When to get it checked</h2>
+          </div>
+          <ul className="md:col-span-8 grid gap-4 md:grid-cols-2" data-stagger>
+            {c.whenToSeekCare.map((s, i) => (
+              <li key={i} className="rounded-2xl bg-ink/10 p-5 font-medium leading-snug">
+                {s}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Ayurvedic approach */}
+      <section className="py-24 md:py-32">
+        <div className="wrap grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <Label n="04">The Ayurvedic approach</Label>
+            <h2 data-split className="display mt-5 text-6xl md:text-8xl">
+              How we treat <span className="text-lime">{n.toLowerCase()}</span>
+            </h2>
+          </div>
+          <div className="md:col-span-7 space-y-6" data-stagger>
+            {c.ayurvedicApproach.map((p, i) => (
+              <p key={i} className="border-l-2 border-saffron pl-6 text-lg text-bone/80 leading-relaxed">
+                {p}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <div className="wrap mt-20">
+          <p className="eyebrow text-ash">Therapies used for {n.toLowerCase()}</p>
+          <ul className="mt-6 flex flex-wrap gap-3" data-stagger>
+            {c.therapiesOffered.map((t) => (
+              <li key={t} className="rounded-full border hairline px-5 py-3 text-sm md:text-base">
+                {t}
+              </li>
+            ))}
+          </ul>
+          {therapies.length > 0 && (
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
+              {therapies.map((t) => (
+                <Link
+                  key={t.slug}
+                  href={`/therapies/${t.slug}`}
+                  className="group flex min-h-[200px] flex-col justify-between rounded-[22px] bg-ink-3 p-6 transition-colors duration-500 hover:bg-lime hover:text-ink"
+                >
+                  <span className="eyebrow opacity-60">{t.sanskrit}</span>
+                  <span>
+                    <span className="display block text-4xl">{t.name}</span>
+                    <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium">
+                      How it works <ArrowUpRight size={16} className="transition-transform group-hover:rotate-45" />
+                    </span>
+                  </span>
+                </Link>
               ))}
             </div>
-          </section>
-        )}
-
-        {/* 8. Medical Safety Disclaimer & Appointment CTA */}
-        <div className="anim-card mt-16 p-8 md:p-12 rounded-3xl bg-midnight border border-gold/40 text-center max-w-4xl mx-auto shadow-2xl">
-          <ShieldCheck size={32} className="text-gold mx-auto mb-4" />
-          <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory mb-4">
-            Arrange Your Consultation with Dr. Krishna Mohan
-          </h3>
-          <p className="text-sm text-ivory/70 leading-relaxed font-body max-w-2xl mx-auto mb-8">
-            Take a responsible, non-surgical step towards relieving {condition.name}. Connect with
-            our coordination desk on WhatsApp or call our Hyderabad clinic directly.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={contactConfig.getWhatsAppUrl(
-                `Hello Dr. Krishna Mohan, I would like to schedule an appointment for ${condition.name} at Swasthik Ayurveda.`
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gold hover:bg-gold-soft text-midnight font-heading font-semibold text-sm transition-all shadow-lg"
-            >
-              <MessageCircle size={16} />
-              <span>Book Consultation on WhatsApp</span>
-            </a>
-
-            <a
-              href={contactConfig.getPhoneUrl()}
-              className="inline-flex items-center gap-2 px-7 py-4 rounded-full border border-gold/40 text-gold hover:bg-gold/10 font-heading font-semibold text-sm transition-all"
-            >
-              <Phone size={15} />
-              <span>Call: {siteConfig.phone}</span>
-            </a>
-          </div>
-
-          <p className="text-xs text-ivory/40 mt-8 max-w-xl mx-auto font-body">
-            Disclaimer: Ayurvedic supportive therapies are personalized after individual clinical
-            assessment. We do not claim guaranteed results or promise that Ayurvedic therapies
-            substitute for required emergency interventions.
-          </p>
+          )}
         </div>
-      </div>
+      </section>
+
+      {/* Steps */}
+      <section className="border-t hairline py-24 md:py-32">
+        <div className="wrap">
+          <Label n="05">Your care plan</Label>
+          <h2 data-split className="display mt-5 text-6xl md:text-8xl">
+            Step by <span className="text-saffron">step.</span>
+          </h2>
+          <ol className="mt-14 grid gap-px overflow-hidden rounded-[28px] border hairline bg-[var(--line)] md:grid-cols-2 lg:grid-cols-4" data-stagger>
+            {c.consultationSteps.map((s) => (
+              <li key={s.step} className="flex min-h-[300px] flex-col justify-between bg-ink p-7">
+                <span className="display text-7xl text-outline-saffron">0{s.step}</span>
+                <div>
+                  <h3 className="text-xl font-semibold">{s.title}</h3>
+                  <p className="mt-3 text-bone/70 leading-relaxed">{s.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <Faq faqs={c.faqs} title={`${n} FAQ`} />
+
+      {/* Related + next */}
+      <section className="border-t hairline py-20">
+        <div className="wrap">
+          {related.length > 0 && (
+            <>
+              <Label>Related conditions</Label>
+              <div className="mt-8 flex flex-wrap gap-3">
+                {related.map((r) => (
+                  <Link key={r.slug} href={`/treatments/${r.slug}`} className="btn btn-ghost">
+                    {shortName(r.name)} <ArrowUpRight size={16} />
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
+          <Link href={`/treatments/${next.slug}`} className="group mt-16 block border-t hairline pt-10">
+            <span className="eyebrow text-ash">Next condition</span>
+            <span className="display mt-3 flex items-center justify-between text-[8.4vw] md:text-[4.8vw] transition-colors group-hover:text-saffron">
+              {shortName(next.name)}
+              <ArrowUpRight className="h-[0.6em] w-[0.6em] transition-transform duration-500 group-hover:rotate-45" />
+            </span>
+          </Link>
+        </div>
+      </section>
+
+      <CtaBand title={`Beat ${n.toLowerCase()} in`} accent="2027" message={bookMsg} />
     </main>
   );
 }
-

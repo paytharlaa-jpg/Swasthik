@@ -1,223 +1,140 @@
-import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ArrowUpRight } from "lucide-react";
+import { CtaBand, Label, Marquee, PageHero } from "@/components/ui/blocks";
 import { siteConfig } from "@/config/site";
-import { contactConfig } from "@/config/contact";
-import { ShieldCheck, Heart, Sparkles, Award, ArrowRight, MessageCircle } from "lucide-react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About Us | Swasthik Ayurveda Hyderabad",
+export const metadata = pageMetadata({
+  title: "About Swasthik Ayurveda | Ayurvedic Spine & Joint Clinic, Kukatpally",
   description:
-    "Learn about Swasthik Ayurveda, Dr. Krishna Mohan, and our patient-centered classical Ayurvedic approach to spine, joint, and chronic pain care in Hyderabad.",
-  keywords: [
-    "About Swasthik Ayurveda",
-    "Dr Krishna Mohan",
-    "Ayurvedic Clinic Hyderabad",
-    "Ayurvedic spine doctor Kukatpally",
-    "Classical Ayurveda Telangana",
-  ],
-};
+    "Swasthik Ayurveda is a doctor-led classical Ayurvedic clinic in Kukatpally, Hyderabad, focused on non-surgical care for spine, joint and chronic pain conditions.",
+  path: "/about",
+  keywords: ["About Swasthik Ayurveda", "Ayurvedic clinic Kukatpally", "Ayurvedic spine clinic Hyderabad", "Dr Krishna Mohan"],
+});
+
+const PILLARS = [
+  {
+    t: "Senior doctor, every time",
+    d: "Every consultation and therapy plan is supervised directly by Dr. Krishna Mohan, from first assessment to rehab.",
+  },
+  {
+    t: "No false promises",
+    d: "We don't sell miracle cures or guaranteed outcomes. You get honest, evidence-informed expectations.",
+  },
+  {
+    t: "You leave stronger",
+    d: "Ergonomics, sleep posture, core exercises and diet, so you can protect your spine at home.",
+  },
+];
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-midnight text-ivory pt-28 pb-20 font-body">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Breadcrumb Navigation */}
-        <Breadcrumbs items={[{ label: "About Us" }]} />
+    <main>
+      <PageHero
+        eyebrow="About the clinic"
+        title="Ancient science."
+        accent="Modern honesty."
+        intro="Swasthik Ayurveda was founded for one purpose: authentic, evidence-informed classical Ayurvedic care for people living with spine, joint and chronic pain in Hyderabad."
+        crumbs={[{ name: "About", path: "/about" }]}
+      />
 
-        {/* Page Hero Header */}
-        <div className="py-12 md:py-16 text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-widest mb-4">
-            <Sparkles size={14} />
-            <span>Rooted in Classical Wisdom</span>
+      <div className="border-y hairline py-5">
+        <Marquee items={["Charaka Samhita", "Sushruta Samhita", "Ashtanga Hridaya", "Non-surgical first", "Root-cause care"]} className="display text-4xl md:text-6xl text-outline" speed={45} />
+      </div>
+
+      <section className="py-24 md:py-32">
+        <div className="wrap grid gap-12 md:grid-cols-12 md:items-center">
+          <div className="md:col-span-6">
+            <Label n="01">Our philosophy</Label>
+            <p data-scrub-words className="display mt-8 text-5xl md:text-7xl leading-[0.95]">
+              Ayurveda never treats a disease in isolation. Every pain is a story of Vata, tissue and posture.
+            </p>
+            <div data-reveal className="mt-10 space-y-5 text-lg text-bone/75 leading-relaxed">
+              <p>
+                Whether it&apos;s an acute sciatica flare, a lumbar disc protrusion or knee crepitus, we see it as an
+                imbalance in Vata dosha, tissue dryness (Asthi-Majja Kshaya) and mechanical strain.
+              </p>
+              <p>
+                So we combine classical procedures with a careful modern exam: range-of-motion testing, nerve checks and
+                MRI and X-ray review. Then we build a care plan around your real daily life.
+              </p>
+              <p>
+                We put conservative, non-surgical care first. Instead of masking pain with painkillers, our therapies
+                work on the biological and mechanical causes of inflammation and stiffness.
+              </p>
+            </div>
           </div>
-
-          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6 leading-tight">
-            Traditional Ayurvedic Wisdom.{" "}
-            <span className="text-gold">Personalized Healing.</span>
-          </h1>
-
-          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
-            Swasthik Ayurveda was founded with a singular purpose: to offer authentic,
-            evidence-informed classical Ayurvedic care for patients suffering from spinal,
-            articular, and chronic pain disorders in Hyderabad.
-          </p>
+          <div className="md:col-span-6">
+            <div data-reveal="clip" className="duotone relative aspect-[4/5] rounded-[28px]">
+              <Image src="/images/treatments/ayurveda-history.jpg" alt="Classical Ayurvedic texts and herbs" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Clinic Story & Philosophy Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
-          <div className="lg:col-span-6 space-y-6 text-sm sm:text-base text-ivory/80 leading-relaxed">
-            <h2 className="text-2xl sm:text-3xl font-heading font-semibold text-ivory">
-              Our Clinical Philosophy
+      <section className="border-t hairline py-24 md:py-32">
+        <div className="wrap">
+          <Label n="02">What we stand for</Label>
+          <div className="mt-12 grid gap-5 md:grid-cols-3" data-stagger>
+            {PILLARS.map((p, i) => (
+              <div key={p.t} className={`flex min-h-[360px] flex-col justify-between rounded-[28px] p-8 ${i === 0 ? "bg-saffron text-ink" : i === 1 ? "bg-ink-3" : "bg-lime text-ink"}`}>
+                <span className="display text-8xl opacity-90">0{i + 1}</span>
+                <div>
+                  <h2 className="display text-5xl">{p.t}</h2>
+                  <p className="mt-4 leading-relaxed opacity-80">{p.d}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-bone py-24 text-ink md:py-32">
+        <div className="wrap grid gap-12 md:grid-cols-12 md:items-center">
+          <div className="md:col-span-4">
+            <div data-reveal="clip" className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
+              <Image src="/images/doctor/dr-krishna-mohan.jpg" alt={siteConfig.leadDoctor} fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover" />
+            </div>
+          </div>
+          <div className="md:col-span-8 md:pl-10">
+            <Label n="03" className="!text-ink/60">
+              Lead physician
+            </Label>
+            <h2 data-split className="display mt-5 text-[9vw] md:text-[4.2vw]">
+              {siteConfig.leadDoctor}
             </h2>
-            <p>
-              Ayurveda does not treat diseases in isolation. It recognizes that every musculoskeletal
-              complaint—whether an acute sciatica flare-up, a lumbar disc protrusion, or progressive
-              knee crepitus—is an expression of an underlying imbalance in Vata dosha, tissue
-              dehydration (Asthi-Majja Kshaya), and structural misalignment.
+            <p data-reveal className="mt-6 max-w-2xl text-xl leading-relaxed text-ink/75">
+              With years of focused clinical experience in Ayurvedic musculoskeletal care, Dr. Krishna Mohan has guided
+              hundreds of patients through non-surgical management of sciatica, disc herniation, cervical spondylosis and
+              degenerative arthritis.
             </p>
-            <p>
-              At Swasthik Ayurveda, we combine ancient classical procedures with careful modern
-              clinical examination. Our team conducts physical range-of-motion assessments, analyzes
-              MRI and X-ray imaging, and designs a multi-layered therapy roadmap customized to each
-              patient&apos;s daily lifestyle.
-            </p>
-            <p>
-              We firmly prioritize conservative, non-surgical approaches. Rather than temporarily
-              masking symptoms with pharmaceutical analgesics, our therapies target the biological
-              and mechanical factors contributing to inflammation and joint stiffness.
-            </p>
-          </div>
-
-          <div className="lg:col-span-6 flex justify-center">
-            <div className="relative w-full max-w-lg h-80 sm:h-96 rounded-3xl overflow-hidden border border-gold/30 shadow-2xl">
-              <Image
-                src="/images/treatments/ayurveda-history.jpg"
-                alt="Ayurvedic Tradition & Healing at Swasthik"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-midnight/80 backdrop-blur-md border border-white/10 text-xs text-ivory/90">
-                <span className="text-gold font-semibold uppercase tracking-wider block mb-1">
-                  Time-Tested Tradition
-                </span>
-                Classical Ayurvedic texts (Charaka & Sushruta Samhitas) form the foundation of our clinical therapies.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Core Pillars */}
-        <div className="mb-24">
-          <SectionHeading
-            badge="Our Standards"
-            title="What Sets Swasthik Ayurveda Apart"
-            subtitle="Our clinical commitments ensure you receive honest, medically responsible, and dedicated care."
-          />
-
-          <div className="anim-card-grid grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-3xl bg-navy-deep/40 border border-white/10 hover:border-gold/40 transition-all">
-              <div className="w-12 h-12 rounded-2xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mb-6">
-                <Award size={22} />
-              </div>
-              <h3 className="text-xl font-heading font-semibold text-ivory mb-3">
-                Direct Senior Doctor Care
-              </h3>
-              <p className="text-sm text-ivory/70 leading-relaxed font-body">
-                Every consultation and therapy regimen is supervised directly by Dr. Krishna Mohan,
-                ensuring clinical excellence from assessment through rehabilitation.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-3xl bg-navy-deep/40 border border-white/10 hover:border-gold/40 transition-all">
-              <div className="w-12 h-12 rounded-2xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mb-6">
-                <ShieldCheck size={22} />
-              </div>
-              <h3 className="text-xl font-heading font-semibold text-ivory mb-3">
-                No False Promises
-              </h3>
-              <p className="text-sm text-ivory/70 leading-relaxed font-body">
-                We believe in ethical medicine. We do not claim miracle cures or guaranteed recovery
-                rates. We provide realistic, evidence-informed clinical expectations.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-3xl bg-navy-deep/40 border border-white/10 hover:border-gold/40 transition-all">
-              <div className="w-12 h-12 rounded-2xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mb-6">
-                <Heart size={22} />
-              </div>
-              <h3 className="text-xl font-heading font-semibold text-ivory mb-3">
-                Patient Empowerment
-              </h3>
-              <p className="text-sm text-ivory/70 leading-relaxed font-body">
-                Healing does not end at our clinic door. We equip patients with customized ergonomic
-                habits, spine-safe sleeping postures, and core strengthening exercises.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Doctor Feature Card */}
-        <div className="anim-card rounded-3xl bg-navy-deep/60 border border-gold/30 p-8 md:p-12 mb-20">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-            <div className="md:col-span-4 flex justify-center">
-              <div className="relative w-48 h-64 md:w-56 md:h-72 rounded-2xl overflow-hidden border border-gold/40">
-                <Image
-                  src="/images/doctor/dr-krishna-mohan.jpg"
-                  alt={siteConfig.leadDoctor}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="md:col-span-8">
-              <span className="text-xs uppercase tracking-widest text-gold font-semibold block mb-2">
-                Lead Physician
-              </span>
-              <h3 className="text-2xl md:text-3xl font-heading font-semibold text-ivory mb-4">
-                {siteConfig.leadDoctor}
-              </h3>
-              <p className="text-sm md:text-base text-ivory/80 leading-relaxed font-body mb-6">
-                With years of dedicated clinical experience in Ayurvedic musculoskeletal disorders,
-                Dr. Krishna Mohan has guided hundreds of patients through non-surgical management of
-                sciatica, intervertebral disc herniations, cervical spondylosis, and degenerative
-                arthritis.
-              </p>
-              <div className="flex flex-wrap items-center gap-4">
-                <Link
-                  href="/doctors"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gold hover:bg-gold-soft text-midnight text-xs font-semibold uppercase tracking-wider transition-all"
-                >
-                  <span>Meet Our Doctors</span>
-                  <ArrowRight size={14} />
-                </Link>
-                <a
-                  href={contactConfig.getWhatsAppUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gold/40 text-gold hover:bg-gold/10 text-xs font-semibold uppercase tracking-wider transition-all"
-                >
-                  <MessageCircle size={14} />
-                  <span>WhatsApp Consultation</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Clinic Location & CTA */}
-        <div className="anim-card p-8 md:p-12 rounded-3xl bg-midnight border border-white/10 text-center max-w-3xl mx-auto">
-          <h3 className="text-2xl md:text-3xl font-heading font-semibold text-ivory mb-4">
-            Visit Swasthik Ayurveda in Hyderabad
-          </h3>
-          <p className="text-sm text-ivory/70 font-body mb-8 leading-relaxed">
-            Conveniently located Above HDFC Bank in Dharmareddy Colony Phase-II, Hydernagar,
-            Kukatpally. Reach out to arrange a consultation at a time convenient for you.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={contactConfig.getWhatsAppUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gold hover:bg-gold-soft text-midnight font-semibold text-sm transition-all shadow-lg"
-            >
-              <MessageCircle size={16} />
-              <span>Book Appointment</span>
-            </a>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-gold/40 text-gold hover:bg-gold/10 font-semibold text-sm transition-all"
-            >
-              <span>Get Directions & Details</span>
+            <Link href="/doctors" className="btn mt-10 bg-ink text-bone before:bg-saffron hover:text-ink">
+              Meet the doctors <ArrowUpRight size={18} />
             </Link>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="py-24 md:py-32">
+        <div className="wrap grid gap-10 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-7">
+            <Label n="04">Visit us</Label>
+            <h2 data-split className="display mt-5 text-[8.4vw] md:text-[4.2vw]">
+              Kukatpally, <span className="text-saffron">Hyderabad</span>
+            </h2>
+          </div>
+          <div data-reveal className="md:col-span-5 space-y-4 text-lg text-bone/75">
+            <p>{siteConfig.address}</p>
+            <p>{siteConfig.hours}</p>
+            <a href={siteConfig.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+              Get directions <ArrowUpRight size={18} />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <CtaBand />
     </main>
   );
 }
-

@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { conditionsData } from "@/content/treatments/treatmentData";
 import { blogPosts } from "@/content/blog/blogData";
+import { therapiesData } from "@/content/therapies/therapyData";
 
 export const dynamic = "force-static";
 
@@ -28,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/treatments/`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/therapies/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
@@ -66,5 +73,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
-  return [...staticRoutes, ...conditionRoutes, ...blogRoutes];
+  const therapyRoutes: MetadataRoute.Sitemap = therapiesData.map((t) => ({
+    url: `${baseUrl}/therapies/${t.slug}/`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.85,
+  }));
+
+  return [...staticRoutes, ...conditionRoutes, ...therapyRoutes, ...blogRoutes];
 }

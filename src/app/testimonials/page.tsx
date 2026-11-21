@@ -1,83 +1,58 @@
-import { Metadata } from "next";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { TestimonialCard } from "@/components/testimonials/TestimonialCard";
+import { CtaBand, PageHero } from "@/components/ui/blocks";
 import { testimonialsData } from "@/content/testimonials/testimonialData";
-import { siteConfig } from "@/config/site";
-import { contactConfig } from "@/config/contact";
-import { ShieldCheck, MessageCircle, HeartHandshake } from "lucide-react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Patient Experiences & Reviews | Swasthik Ayurveda Hyderabad",
+export const metadata = pageMetadata({
+  title: "Patient Stories | Sciatica, Disc & Knee Pain Recovery at Swasthik Ayurveda",
   description:
-    "Read genuine, permission-based testimonials and recovery stories from patients treated for Sciatica, Slip Disc, and Knee Pain at Swasthik Ayurveda Hyderabad.",
-  keywords: [
-    "Swasthik Ayurveda reviews",
-    "Dr Krishna Mohan patient stories",
-    "Sciatica recovery Hyderabad Ayurveda",
-    "Ayurvedic clinic reviews Kukatpally",
-  ],
-};
+    "Real experiences from patients treated at Swasthik Ayurveda, Kukatpally, Hyderabad for sciatica, L4-L5 disc bulge, knee osteoarthritis and cervical spondylosis.",
+  path: "/testimonials",
+  keywords: ["Swasthik Ayurveda reviews", "Ayurvedic sciatica treatment review Hyderabad", "Dr Krishna Mohan reviews"],
+});
 
 export default function TestimonialsPage() {
   return (
-    <main className="min-h-screen bg-midnight text-ivory pt-28 pb-20 font-body">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Breadcrumb Navigation */}
-        <Breadcrumbs items={[{ label: "Patient Experiences" }]} />
+    <main>
+      <PageHero
+        eyebrow="Patient stories"
+        title="In their"
+        accent="own words."
+        intro="Experiences shared by patients treated at our Kukatpally clinic. Every recovery is different."
+        crumbs={[{ name: "Patient stories", path: "/testimonials" }]}
+      />
 
-        {/* Page Hero Header */}
-        <div className="py-12 md:py-16 text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-widest mb-4">
-            <HeartHandshake size={14} />
-            <span>Real Patient Experiences</span>
-          </div>
-
-          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
-            Words of Trust, Relief, and Healing
-          </h1>
-
-          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
-            Authentic reflections from patients who experienced our conservative, root-cause
-            treatment approach for chronic spinal and joint distress.
-          </p>
-        </div>
-
-        {/* Testimonials Grid */}
-        <div className="anim-card-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {testimonialsData.map((testimonial) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+      <section className="pb-24 md:pb-32">
+        <div className="wrap space-y-5">
+          {testimonialsData.map((t, i) => (
+            <figure
+              key={t.id}
+              data-reveal
+              className={`grid gap-8 rounded-[28px] p-7 md:grid-cols-12 md:p-12 ${
+                i % 3 === 0 ? "bg-saffron text-ink" : i % 3 === 1 ? "bg-ink-3" : "bg-lime text-ink"
+              }`}
+            >
+              <figcaption className="md:col-span-4 flex flex-col justify-between gap-6">
+                <span className="display text-7xl md:text-8xl opacity-90">0{i + 1}</span>
+                <span>
+                  <span className="display block text-4xl">{t.patientName}</span>
+                  <span className="eyebrow mt-2 block opacity-70">{t.location}</span>
+                </span>
+              </figcaption>
+              <div className="md:col-span-8">
+                <p className="eyebrow opacity-70">
+                  {t.condition}
+                  {t.treatmentDuration ? ` · ${t.treatmentDuration}` : ""}
+                </p>
+                <blockquote className="mt-4 text-2xl md:text-3xl font-medium leading-snug">&ldquo;{t.quote}&rdquo;</blockquote>
+              </div>
+            </figure>
           ))}
-        </div>
-
-        {/* Ethical Verification Standards */}
-        <div className="anim-card p-8 md:p-12 rounded-3xl bg-navy-deep/40 border border-gold/30 text-center max-w-4xl mx-auto mb-16">
-          <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mx-auto mb-4">
-            <ShieldCheck size={24} />
-          </div>
-          <h3 className="text-2xl font-heading font-semibold text-ivory mb-3">
-            Our Ethical Review Commitment
-          </h3>
-          <p className="text-sm text-ivory/70 leading-relaxed font-body max-w-2xl mx-auto mb-6">
-            All testimonials published by Swasthik Ayurveda represent genuine, unaltered feedback
-            provided with patient consent. In accordance with medical ethics, we do not fabricate
-            patient reviews, manipulate recovery timelines, or claim that every individual achieves
-            the same outcome. Clinical results depend on condition chronicity and adherence to care.
+          <p className="pt-6 text-sm text-ash">
+            Individual results vary. Testimonials describe personal experiences and are not a guarantee of outcome.
           </p>
-          <a
-            href={contactConfig.getWhatsAppUrl(
-              `Hello Swasthik Ayurveda, I would like to consult Dr. Krishna Mohan regarding my spinal/joint condition.`
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gold hover:bg-gold-soft text-midnight font-heading font-semibold text-sm transition-all shadow-lg"
-          >
-            <MessageCircle size={16} />
-            <span>Consult Our Clinical Team on WhatsApp</span>
-          </a>
         </div>
-      </div>
+      </section>
+      <CtaBand />
     </main>
   );
 }
-

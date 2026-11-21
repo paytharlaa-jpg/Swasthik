@@ -4,166 +4,170 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, MessageCircle } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { contactConfig } from "@/config/contact";
+import { getLenis } from "@/components/motion/SmoothScroll";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
+export const navLinks = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Treatments", href: "/treatments" },
+  { label: "Conditions", href: "/treatments" },
+  { label: "Therapies", href: "/therapies" },
   { label: "Doctors", href: "/doctors" },
-  { label: "Testimonials", href: "/testimonials" },
-  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+  { label: "Stories", href: "/testimonials" },
+  { label: "Journal", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 30);
+      setHidden(y > last && y > 400);
+      last = y;
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    const lenis = getLenis();
+    if (open) lenis?.stop();
+    else lenis?.start();
+    document.body.style.overflow = open ? "hidden" : "";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 w-full z-40 transition-all duration-300 font-body",
-          isScrolled
-            ? "bg-midnight/90 backdrop-blur-md py-3 border-b border-white/10 shadow-xl"
-            : "bg-transparent py-5"
+          "fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out-expo",
+          hidden && !open ? "-translate-y-full" : "translate-y-0",
+          scrolled && !open ? "bg-ink/75 backdrop-blur-xl border-b hairline" : "bg-transparent"
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="relative z-50 flex items-center gap-3">
-            <div className="relative w-36 h-10 sm:w-44 sm:h-12 md:w-52 md:h-14">
-              <Image
-                src="/images/brand/swasthik-ayurveda-logo.png"
-                alt={siteConfig.name}
-                fill
-                priority
-                className="object-contain"
-              />
-            </div>
+        <div className="wrap flex h-16 md:h-20 items-center justify-between gap-4">
+          <Link href="/" aria-label={`${siteConfig.name} home`} className="relative block h-11 w-[78px] shrink-0 md:h-14 md:w-[100px]">
+            <Image
+              src="/images/brand/swasthik-ayurveda-logo.png"
+              alt={siteConfig.name}
+              fill
+              sizes="100px"
+              priority
+              className="object-contain"
+            />
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname?.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "text-xs uppercase tracking-widest font-semibold transition-colors relative py-1",
-                    isActive
-                      ? "text-gold"
-                      : "text-ivory/80 hover:text-gold"
-                  )}
-                >
-                  {link.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gold rounded-full" />
-                  )}
-                </Link>
-              );
-            })}
+          <nav aria-label="Primary" className="hidden xl:flex items-center gap-7 text-sm">
+            {navLinks.slice(1, 7).map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={cn(
+                  "relative py-1 transition-colors hover:text-lime",
+                  pathname.startsWith(l.href) ? "text-lime" : "text-bone/80"
+                )}
+              >
+                {l.label}
+              </Link>
+            ))}
           </nav>
 
-          {/* Right Action CTAs */}
-          <div className="hidden lg:flex items-center gap-4">
-            <a
-              href={contactConfig.getPhoneUrl()}
-              className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-ivory/90 hover:text-gold transition-colors py-2 px-3"
-              aria-label={`Call ${siteConfig.phone}`}
-            >
-              <Phone size={14} className="text-gold" />
-              <span>{siteConfig.phone}</span>
-            </a>
-
+          <div className="flex items-center gap-2">
             <a
               href={contactConfig.getWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gold hover:bg-gold-soft text-midnight text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-[0_0_16px_rgba(212,175,55,0.3)] hover:scale-105"
+              className="btn btn-saffron !px-4 !py-2.5 text-sm hidden sm:inline-flex"
             >
-              <MessageCircle size={15} />
-              <span>Book Consultation</span>
+              Book <ArrowUpRight size={16} />
             </a>
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls="site-menu"
+              className="group flex h-11 items-center gap-3 rounded-full border hairline px-4 text-sm font-medium hover:border-bone/50"
+            >
+              <span className="eyebrow">{open ? "Close" : "Menu"}</span>
+              <span className="relative block h-3 w-5">
+                <span
+                  className={cn(
+                    "absolute left-0 h-[2px] w-5 bg-current transition-all duration-500 ease-out-expo",
+                    open ? "top-1.5 rotate-45" : "top-0"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "absolute left-0 h-[2px] w-5 bg-current transition-all duration-500 ease-out-expo",
+                    open ? "top-1.5 -rotate-45" : "top-[10px]"
+                  )}
+                />
+              </span>
+            </button>
           </div>
-
-          {/* Mobile Menu Hamburger Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-ivory p-2 focus:outline-none focus:ring-2 focus:ring-gold/50 rounded-lg"
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
         </div>
       </header>
 
-      {/* Mobile Menu Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-midnight/98 backdrop-blur-xl lg:hidden flex flex-col justify-between pt-28 pb-10 px-8 animate-in fade-in duration-300">
-          <nav className="flex flex-col gap-6 text-center">
-            {navLinks.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname?.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
+      {/* Full-screen menu */}
+      <div
+        id="site-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
+        className={cn(
+          "fixed inset-0 z-40 bg-saffron text-ink transition-[clip-path] duration-700 ease-out-expo",
+          open ? "[clip-path:inset(0_0_0_0)]" : "[clip-path:inset(0_0_100%_0)] pointer-events-none"
+        )}
+        data-lenis-prevent
+      >
+        <div className="wrap flex h-full flex-col justify-between overflow-y-auto pt-24 pb-8">
+          <nav aria-label="Menu" className="flex flex-col">
+            {navLinks.map((l, i) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                tabIndex={open ? 0 : -1}
+                className="group flex items-baseline justify-between border-b border-ink/20 py-1.5"
+                style={{ transitionDelay: open ? `${120 + i * 45}ms` : "0ms" }}
+              >
+                <span
                   className={cn(
-                    "text-xl font-heading font-semibold transition-colors py-1",
-                    isActive ? "text-gold" : "text-ivory hover:text-gold"
+                    "display text-[7.8vw] md:text-[4.3vw] lg:text-[3.4vw] transition-all duration-700 ease-out-expo group-hover:translate-x-4 group-hover:text-bone",
+                    open ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
                   )}
+                  style={{ transitionDelay: open ? `${120 + i * 45}ms` : "0ms" }}
                 >
-                  {link.label}
-                </Link>
-              );
-            })}
+                  {l.label}
+                </span>
+                <span className="eyebrow">0{i + 1}</span>
+              </Link>
+            ))}
           </nav>
-
-          <div className="flex flex-col gap-3 pt-6 border-t border-white/10">
-            <a
-              href={contactConfig.getWhatsAppUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-[#25D366] text-white text-sm font-semibold shadow-lg"
-            >
-              <MessageCircle size={18} />
-              <span>WhatsApp Consultation</span>
+          <div className="mt-10 grid gap-4 text-sm md:grid-cols-3">
+            <a href={contactConfig.getPhoneUrl()} tabIndex={open ? 0 : -1} className="font-medium">
+              {siteConfig.phone}
             </a>
-
-            <a
-              href={contactConfig.getPhoneUrl()}
-              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-gold text-midnight text-sm font-semibold shadow-lg"
-            >
-              <Phone size={18} />
-              <span>Call Clinic: {siteConfig.phone}</span>
-            </a>
+            <span>{siteConfig.address}</span>
+            <span>{siteConfig.hours}</span>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }
-

@@ -1,102 +1,81 @@
-import { Metadata } from "next";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { TreatmentCard } from "@/components/treatments/TreatmentCard";
-import { BodyPainMap } from "@/components/treatments/BodyPainMap";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { conditionsData } from "@/content/treatments/treatmentData";
-import { contactConfig } from "@/config/contact";
-import { siteConfig } from "@/config/site";
-import { MessageCircle, ShieldCheck, Sparkles } from "lucide-react";
+import { CtaBand, PageHero } from "@/components/ui/blocks";
+import { pageMetadata, jsonLd, absoluteUrl } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Ayurvedic Spine & Joint Treatments in Hyderabad | Swasthik Ayurveda",
+export const metadata = pageMetadata({
+  title: "Ayurvedic Treatment for Back, Spine, Neck & Knee Pain in Hyderabad",
   description:
-    "Explore our complete range of non-surgical Ayurvedic therapies for Sciatica, Slip Disc, L4-L5 Bulge, Knee Osteoarthritis, and Cervical Spondylosis at Swasthik Ayurveda Hyderabad.",
+    "Non-surgical Ayurvedic treatment in Kukatpally, Hyderabad for sciatica, slip disc, L4-L5 disc bulge, back pain, lower back pain, knee pain, knee osteoarthritis and cervical spondylosis.",
+  path: "/treatments",
   keywords: [
-    "Ayurvedic treatments Hyderabad",
-    "Spine care Ayurveda",
-    "Sciatica treatment Kukatpally",
-    "Knee pain Ayurvedic therapy",
-    "Kati Vasti Hyderabad",
-    "Agnikarma therapy",
+    "Ayurvedic treatment for back pain Hyderabad",
+    "spine treatment without surgery Hyderabad",
+    "knee pain Ayurvedic treatment Kukatpally",
+    "sciatica Ayurveda Hyderabad",
+    "neck pain Ayurvedic treatment",
   ],
-};
+});
+
+const shortName = (name: string) => name.replace(/ \(.*\)/, "");
 
 export default function TreatmentsPage() {
+  const list = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Conditions treated at Swasthik Ayurveda",
+    itemListElement: conditionsData.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: absoluteUrl(`/treatments/${c.slug}`),
+      name: c.name,
+    })),
+  };
+
   return (
-    <main className="min-h-screen bg-midnight text-ivory pt-28 pb-20 font-body">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Breadcrumb Navigation */}
-        <Breadcrumbs items={[{ label: "Treatments" }]} />
+    <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(list)} />
+      <PageHero
+        eyebrow="Conditions we treat"
+        title="Spine & joint pain,"
+        accent="treated at the root."
+        intro="Eight conditions we see every day in Kukatpally. Pick yours to read what causes it, how classical Ayurveda treats it, and what your care plan looks like."
+        crumbs={[{ name: "Conditions", path: "/treatments" }]}
+      />
 
-        {/* Page Hero Header */}
-        <div className="py-12 md:py-16 text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-widest mb-4">
-            <Sparkles size={14} />
-            <span>Targeted Clinical Specialization</span>
-          </div>
+      <section className="pb-24">
+        <ul className="border-t hairline">
+          {conditionsData.map((c, i) => (
+            <li key={c.slug} className="border-b hairline">
+              <Link
+                href={`/treatments/${c.slug}`}
+                className="group wrap relative grid items-center gap-4 py-8 md:grid-cols-12 md:py-10"
+              >
+                <span className="display text-3xl text-saffron md:col-span-1">{String(i + 1).padStart(2, "0")}</span>
+                <span className="md:col-span-6">
+                  <span className="display block text-[7.8vw] md:text-[3.3vw] transition-all duration-500 ease-out-expo group-hover:translate-x-3 group-hover:text-lime">
+                    {shortName(c.name)}
+                  </span>
+                </span>
+                <span className="md:col-span-4 text-bone/70 leading-relaxed">{c.shortDescription}</span>
+                <span className="hidden md:flex md:col-span-1 justify-end">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full border hairline transition-all duration-500 group-hover:rotate-45 group-hover:bg-lime group-hover:text-ink">
+                    <ArrowUpRight />
+                  </span>
+                </span>
+                {/* Floating preview on hover (desktop) */}
+                <span className="duotone pointer-events-none absolute right-[14%] top-1/2 hidden h-48 w-64 -translate-y-1/2 rotate-3 scale-75 rounded-2xl opacity-0 transition-all duration-500 ease-out-expo group-hover:scale-100 group-hover:opacity-100 lg:block">
+                  <Image src={c.image} alt="" fill sizes="256px" className="object-cover" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-          <h1 className="anim-heading text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-ivory tracking-tight mb-6">
-            Non-Surgical Spine & Joint Treatments
-          </h1>
-
-          <p className="anim-subtitle text-base sm:text-lg md:text-xl text-ivory/80 leading-relaxed font-body">
-            Combining traditional Ayurvedic methodologies—such as Kati Vasti, Janu Vasti, and
-            precision Agnikarma—with thorough clinical evaluation to restore freedom of movement.
-          </p>
-        </div>
-
-        {/* Interactive Pain Map Section */}
-        <div className="mb-24">
-          <SectionHeading
-            badge="Interactive Navigator"
-            title="Identify Your Pain Pattern"
-            subtitle="Select the anatomical region causing you discomfort to discover our specific Ayurvedic treatment pathway."
-          />
-          <BodyPainMap />
-        </div>
-
-        {/* 8 Condition Cards Grid */}
-        <div className="mb-24">
-          <SectionHeading
-            badge="Dedicated Condition Care"
-            title="Conditions Addressed at Swasthik Ayurveda"
-            subtitle="Click on any condition below to explore common symptoms, MRI correlation, and our specialized conservative therapies."
-          />
-
-          <div className="anim-card-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {conditionsData.map((condition) => (
-              <TreatmentCard key={condition.slug} condition={condition} />
-            ))}
-          </div>
-        </div>
-
-        {/* Medical Safety Disclaimer Strip */}
-        <div className="anim-card p-8 md:p-12 rounded-3xl bg-navy-deep/40 border border-gold/30 text-center max-w-4xl mx-auto">
-          <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mx-auto mb-4">
-            <ShieldCheck size={24} />
-          </div>
-          <h3 className="text-xl md:text-2xl font-heading font-semibold text-ivory mb-3">
-            Responsible Healthcare Standards
-          </h3>
-          <p className="text-sm text-ivory/70 leading-relaxed font-body mb-6 max-w-2xl mx-auto">
-            Ayurvedic therapies are conservative, non-invasive supportive interventions. Suitability
-            and expected outcomes are determined following an in-person physical assessment by{" "}
-            {siteConfig.leadDoctor}. We encourage patients with acute neurological red flags to seek
-            appropriate urgent medical evaluation.
-          </p>
-          <a
-            href={contactConfig.getWhatsAppUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gold hover:bg-gold-soft text-midnight font-heading font-semibold text-sm transition-all shadow-lg"
-          >
-            <MessageCircle size={16} />
-            <span>Consult Our Clinical Team on WhatsApp</span>
-          </a>
-        </div>
-      </div>
+      <CtaBand />
     </main>
   );
 }
-
